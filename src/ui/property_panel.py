@@ -5,6 +5,7 @@ import os
 
 # 添加数学库路径
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
+
 from geometry import Vector
 
 # 重命名常用组件以保持代码兼容性

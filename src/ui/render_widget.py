@@ -3,6 +3,7 @@ from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import Qt
 import sys
 import os
+import platform
 
 # 重命名常用组件以保持代码兼容性
 QWidget = QtWidgets.QWidget
@@ -11,7 +12,14 @@ QLabel = QtWidgets.QLabel
 
 # 添加核心模块路径
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from core.renderer import Renderer
+from src.core.renderer import Renderer
+
+# 尝试导入 Windows 渲染器
+try:
+    from src.core.windows_renderer import WindowsRenderer
+except ImportError as e:
+    print(f"Error importing WindowsRenderer: {e}")
+    WindowsRenderer = None
 
 class QtRenderer(Renderer):
     """基于Qt的渲染器"""
@@ -64,7 +72,25 @@ class RenderWidget(QWidget):
     def __init__(self, core_app):
         super().__init__()
         self.core_app = core_app
-        self.renderer = QtRenderer(self)
+        
+        # 根据平台选择渲染器
+        if platform.system() == 'Windows' and WindowsRenderer:
+            # 在Windows平台上使用Windows API渲染器
+            try:
+                # 获取窗口句柄
+                hwnd = self.winId()
+                self.renderer = WindowsRenderer(hwnd)
+                print("Using WindowsRenderer")
+            except Exception as e:
+                print(f"Error creating WindowsRenderer: {e}")
+                # 回退到Qt渲染器
+                self.renderer = QtRenderer(self)
+                print("Falling back to QtRenderer")
+        else:
+            # 在其他平台上使用Qt渲染器
+            self.renderer = QtRenderer(self)
+            print("Using QtRenderer")
+        
         self.core_app.set_renderer(self.renderer)
         self.init_ui()
         self.last_time = QtCore.QTime.currentTime()
