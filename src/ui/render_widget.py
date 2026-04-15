@@ -126,8 +126,9 @@ class RenderWidget(QWidget):
             painter = QtGui.QPainter(self.render_area)
             painter.fillRect(self.render_area.rect(), QtGui.QColor(34, 34, 34))  # 深色背景
             
-            # 设置painter到渲染器
-            self.renderer.set_painter(painter)
+            # 只对QtRenderer设置painter
+            if hasattr(self.renderer, 'set_painter'):
+                self.renderer.set_painter(painter)
             
             # 渲染场景
             self.core_app.render()
