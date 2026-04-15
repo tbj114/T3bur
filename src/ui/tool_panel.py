@@ -91,7 +91,12 @@ class ToolPanel(QWidget):
     def create_geometry(self, geometry_type):
         """创建几何体"""
         try:
-            # 这里将实现几何体创建逻辑
-            pass
+            # 调用核心应用的方法创建几何体
+            if geometry_type == "cube":
+                self.core_app.create_cube()
+            elif geometry_type == "sphere":
+                self.core_app.create_sphere()
+            elif geometry_type == "cylinder":
+                self.core_app.create_cylinder()
         except Exception as e:
             print(f"Error creating geometry: {e}")

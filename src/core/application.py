@@ -1,6 +1,7 @@
 from .camera import Camera
 from .scene import Scene, GameObject, Mesh, Material
 from .renderer import Renderer
+import PyQt6
 
 class Application:
     """应用核心类，管理整个3D建模软件的状态和逻辑"""
@@ -191,16 +192,63 @@ class Application:
     def handle_key_event(self, event):
         """处理键盘事件"""
         try:
-            # 这里可以添加键盘事件处理逻辑
-            pass
+            # 处理键盘事件
+            key = event.key()
+            
+            # 相机控制
+            if key == PyQt6.QtCore.Qt.Key.Key_W:
+                # 向前移动
+                self.camera.move_forward(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_S:
+                # 向后移动
+                self.camera.move_backward(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_A:
+                # 向左移动
+                self.camera.move_left(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_D:
+                # 向右移动
+                self.camera.move_right(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_Q:
+                # 向上移动
+                self.camera.move_up(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_E:
+                # 向下移动
+                self.camera.move_down(0.1)
+            elif key == PyQt6.QtCore.Qt.Key.Key_Left:
+                # 向左旋转
+                self.camera.rotate_yaw(-0.05)
+            elif key == PyQt6.QtCore.Qt.Key.Key_Right:
+                # 向右旋转
+                self.camera.rotate_yaw(0.05)
+            elif key == PyQt6.QtCore.Qt.Key.Key_Up:
+                # 向上旋转
+                self.camera.rotate_pitch(-0.05)
+            elif key == PyQt6.QtCore.Qt.Key.Key_Down:
+                # 向下旋转
+                self.camera.rotate_pitch(0.05)
         except Exception as e:
             print(f"Error handling key event: {e}")
     
     def handle_mouse_event(self, event):
         """处理鼠标事件"""
         try:
-            # 这里可以添加鼠标事件处理逻辑
-            pass
+            # 处理鼠标事件
+            if event.type() == PyQt6.QtCore.QEvent.Type.MouseButtonPress:
+                # 鼠标按下事件
+                if event.button() == PyQt6.QtCore.Qt.MouseButton.LeftButton:
+                    # 左键点击，选择对象
+                    pass
+            elif event.type() == PyQt6.QtCore.QEvent.Type.MouseMove:
+                # 鼠标移动事件
+                if event.buttons() & PyQt6.QtCore.Qt.MouseButton.LeftButton:
+                    # 左键拖动，旋转视图
+                    pass
+                elif event.buttons() & PyQt6.QtCore.Qt.MouseButton.MiddleButton:
+                    # 中键拖动，平移视图
+                    pass
+                elif event.buttons() & PyQt6.QtCore.Qt.MouseButton.RightButton:
+                    # 右键拖动，缩放视图
+                    pass
         except Exception as e:
             print(f"Error handling mouse event: {e}")
     

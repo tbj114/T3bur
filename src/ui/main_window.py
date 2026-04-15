@@ -23,7 +23,12 @@ class MainWindow(QMainWindow):
     def __init__(self, core_app):
         super().__init__()
         self.core_app = core_app
+        self.property_panel = None
         self.init_ui()
+        
+        # 连接信号，当选择对象变化时更新属性面板
+        # 注意：这里简化处理，实际应用中可能需要使用信号槽机制
+        # 暂时在每次渲染时检查选择状态
     
     def init_ui(self):
         """初始化UI"""
@@ -124,8 +129,8 @@ class MainWindow(QMainWindow):
         """创建属性面板"""
         try:
             property_dock = QDockWidget("Properties", self)
-            property_panel = PropertyPanel(self.core_app)
-            property_dock.setWidget(property_panel)
+            self.property_panel = PropertyPanel(self.core_app)
+            property_dock.setWidget(self.property_panel)
             self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, property_dock)
             
         except Exception as e:
@@ -151,3 +156,19 @@ class MainWindow(QMainWindow):
             
         except Exception as e:
             print(f"Error creating status bar: {e}")
+    
+    def update_property_panel(self):
+        """更新属性面板"""
+        try:
+            if self.property_panel:
+                self.property_panel.update_properties(self.core_app.selected_object)
+        except Exception as e:
+            print(f"Error updating property panel: {e}")
+    
+    def set_selected_object(self, obj):
+        """设置选中对象"""
+        try:
+            self.core_app.selected_object = obj
+            self.update_property_panel()
+        except Exception as e:
+            print(f"Error setting selected object: {e}")

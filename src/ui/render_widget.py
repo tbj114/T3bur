@@ -151,9 +151,57 @@ class RenderWidget(QWidget):
     def mousePressEvent(self, event):
         """鼠标按下事件"""
         try:
+            # 处理鼠标按下事件
+            if event.button() == PyQt6.QtCore.Qt.MouseButton.LeftButton:
+                # 转换鼠标坐标到渲染区域的坐标系
+                pos = event.pos()
+                render_pos = self.render_area.mapFromParent(pos)
+                
+                # 执行射线检测，选择对象
+                self._pick_object(render_pos.x(), render_pos.y())
+            
             self.core_app.handle_mouse_event(event)
         except Exception as e:
             print(f"Error in mousePressEvent: {e}")
+    
+    def _pick_object(self, x, y):
+        """选择对象"""
+        try:
+            # 获取渲染区域的大小
+            width = self.render_area.width()
+            height = self.render_area.height()
+            
+            # 计算归一化设备坐标
+            ndc_x = (x / width) * 2 - 1
+            ndc_y = 1 - (y / height) * 2
+            
+            # 创建射线
+            ray_origin = self.core_app.camera.position
+            
+            # 计算射线方向
+            # 这里简化处理，使用相机的前向向量
+            ray_direction = (self.core_app.camera.target - self.core_app.camera.position).normalize()
+            
+            # 遍历场景中的对象，进行射线检测
+            closest_object = None
+            closest_distance = float('inf')
+            
+            for obj in self.core_app.scene.game_objects:
+                if obj.mesh:
+                    # 简化的射线检测，实际应用中需要更复杂的算法
+                    # 这里我们假设对象是一个包围球
+                    distance = (obj.transform.position - ray_origin).length() - 1.0  # 假设半径为1
+                    if distance < closest_distance:
+                        closest_object = obj
+                        closest_distance = distance
+            
+            # 设置选中对象
+            if closest_object:
+                # 通知主窗口更新选中对象
+                if hasattr(self.parent(), 'set_selected_object'):
+                    self.parent().set_selected_object(closest_object)
+        except Exception as e:
+            print(f"Error picking object: {e}")
     
     def mouseMoveEvent(self, event):
         """鼠标移动事件"""
