@@ -1,9 +1,18 @@
-from PyQt6.QtWidgets import (
-    QMainWindow, QMenuBar, QToolBar, QStatusBar, 
-    QDockWidget, QWidget, QVBoxLayout, QHBoxLayout,
-    QMenu, QLabel
-)
+import PyQt6
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
+
+# 重命名常用组件以保持代码兼容性
+QMainWindow = QtWidgets.QMainWindow
+QMenuBar = QtWidgets.QMenuBar
+QToolBar = QtWidgets.QToolBar
+QStatusBar = QtWidgets.QStatusBar
+QDockWidget = QtWidgets.QDockWidget
+QWidget = QtWidgets.QWidget
+QVBoxLayout = QtWidgets.QVBoxLayout
+QHBoxLayout = QtWidgets.QHBoxLayout
+QMenu = QtWidgets.QMenu
+QLabel = QtWidgets.QLabel
 from src.ui.render_widget import RenderWidget
 from src.ui.property_panel import PropertyPanel
 from src.ui.tool_panel import ToolPanel

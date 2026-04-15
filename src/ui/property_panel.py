@@ -1,7 +1,14 @@
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QGroupBox, QLabel, 
-    QLineEdit, QPushButton, QFormLayout
-)
+import PyQt6
+from PyQt6 import QtWidgets
+
+# 重命名常用组件以保持代码兼容性
+QWidget = QtWidgets.QWidget
+QVBoxLayout = QtWidgets.QVBoxLayout
+QGroupBox = QtWidgets.QGroupBox
+QLabel = QtWidgets.QLabel
+QLineEdit = QtWidgets.QLineEdit
+QPushButton = QtWidgets.QPushButton
+QFormLayout = QtWidgets.QFormLayout
 
 class PropertyPanel(QWidget):
     """属性面板，用于显示和编辑选中对象的属性"""

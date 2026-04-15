@@ -1,5 +1,11 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel
+import PyQt6
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import Qt
+
+# 重命名常用组件以保持代码兼容性
+QWidget = QtWidgets.QWidget
+QVBoxLayout = QtWidgets.QVBoxLayout
+QLabel = QtWidgets.QLabel
 
 class RenderWidget(QWidget):
     """渲染组件，负责显示3D场景"""

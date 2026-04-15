@@ -5,14 +5,15 @@ import os
 # 添加项目路径
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from PyQt6.QtWidgets import QApplication
+import PyQt6
+from PyQt6 import QtWidgets
 from src.ui.main_window import MainWindow
 from src.core.application import Application
 
 if __name__ == "__main__":
     try:
         # 创建Qt应用
-        app = QApplication(sys.argv)
+        app = QtWidgets.QApplication(sys.argv)
         
         # 创建应用核心
         core_app = Application()
